@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id            String        @id @default(uuid())
+  short_name    String        @unique
+  full_name     String
+  generation    Int
+  birth_date    String
+  jikoshoukai   String
+  kabesha_image String
+  social_media  SocialMedia[]
+  status        String
+  join_date     String
+  graduate_date String
+  lastshow_date String
+  created_at    BigInt
+  updated_at    BigInt
+
+  @@map("members")
+}
+
+model SocialMedia {
+  code      String @id
+  name      String
+  url       String
+  followers Int
+  member    Member @relation(fields: [member_id], references: [id])
+  member_id String
+}
